@@ -2,8 +2,11 @@
 #include "Snake.h"
 #include <utility>
 #include <list>
+#include <random>
 
 int positive_modulo(int i, int n);
+
+int random_int(int max);
 
 int main()
 {
@@ -17,6 +20,8 @@ int main()
     getch();
 
     Snake snake(COLS, LINES);
+    std::pair<int,int> food = {random_int(COLS), random_int(LINES)};
+
     timeout(500);
     int key;
     do {
@@ -49,6 +54,7 @@ int main()
         for (std::pair<int,int> cell : snake.cells) {
             mvaddch(cell.second, cell.first, 'x');
         }
+        mvaddch(food.first, food.second, 'o');
     } while (key != 27 && key != 'q');
 
     endwin();
@@ -59,4 +65,14 @@ int main()
 // From: https://stackoverflow.com/a/14997413/3806231
 int positive_modulo(int i, int n) {
     return (i % n + n) % n;
+}
+
+int random_int(int max) {
+    static std::random_device rd;
+    static std::mt19937 eng(rd());
+
+    std::uniform_int_distribution<> distr(0, max);
+
+    int random_number = distr(eng);
+    return random_number;
 }
