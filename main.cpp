@@ -9,7 +9,7 @@ int main()
     addstr("Snake");
     getch();
 
-    Snake snake(LINES, COLS);
+    Snake snake(COLS, LINES);
     timeout(500);
     while (true) {
         std::pair<int,int> current_front = snake.cells.front();
@@ -20,7 +20,7 @@ int main()
 
         clear();
         for (std::pair<int,int> cell : snake.cells) {
-            mvaddch(cell.first, cell.second, 'x');
+            mvaddch(cell.second, cell.first, 'x');
         }
         getch();
     }

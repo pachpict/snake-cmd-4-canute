@@ -11,12 +11,12 @@
 
 class Snake {
 private:
-    int lines;
     int cols;
+    int lines;
 public:
-    Snake(int lines, int cols);
+    Snake(int cols, int lines);
 
-    std::list<std::pair<int, int>> cells = {{lines / 2, cols / 2}};
+    std::list<std::pair<int, int>> cells = {{cols / 2, lines / 2}};
     std::pair<int, int> direction = {0, -1};
 };
 

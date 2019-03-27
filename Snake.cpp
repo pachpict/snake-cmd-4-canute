@@ -4,4 +4,4 @@
 
 #include "Snake.h"
 
-Snake::Snake(int lines, int cols) : lines(lines), cols(cols) {}
+Snake::Snake(int cols, int lines) : cols(cols), lines(lines) {}
