@@ -6,10 +6,9 @@ int main()
 {
     initscr();
 
-    printw("Hello world!");
-
+    clear();
+    addstr("Snake");
     refresh();
-
     getch();
 
     endwin();
