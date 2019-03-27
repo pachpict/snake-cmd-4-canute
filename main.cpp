@@ -4,6 +4,8 @@
 int main()
 {
     initscr();
+    cbreak();
+    noecho();
 
     clear();
     addstr("Snake");
