@@ -72,6 +72,7 @@ int main()
     } while (key != 27 && key != 'q');
     // TODO: Add "Game over" screen
     // TODO: Game over when snake eats itself
+    // TODO: Add default case to switch to remove warning
 
     endwin();
 
