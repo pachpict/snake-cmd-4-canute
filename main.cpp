@@ -7,9 +7,13 @@ int main()
 
     clear();
     addstr("Snake");
+    getch();
 
+    clear();
     Snake snake(LINES, COLS);
-    printw(",%d,%d",snake.cells.front().first,snake.cells.front().second);
+    for (auto cell : snake.cells) {
+        mvaddch(cell.first,cell.second,'x');
+    }
     getch();
 
     endwin();
