@@ -4,3 +4,4 @@ project(snake_cmd)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(snake_cmd main.cpp Snake.cpp Snake.h)
+target_link_libraries(${PROJECT_NAME} ncurses)
