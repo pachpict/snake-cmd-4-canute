@@ -41,7 +41,7 @@ int main()
                 snake.direction = {0, 1};
                 break;
         }
-    } while (key != 27);
+    } while (key != 27 && key != 'q');
 
     endwin();
 
