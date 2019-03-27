@@ -56,7 +56,6 @@ int main()
         }
 
         clear();
-        mvprintw(0,0,"%d,%d,%d,%d",pellet.first,pellet.second,COLS,LINES);
         for (std::pair<int,int> cell : snake.cells) {
             mvaddch(cell.second, cell.first, 'x');
         }
