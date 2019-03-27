@@ -17,6 +17,7 @@ public:
     Snake(int lines, int cols);
 
     std::list<std::pair<int, int>> cells = {{lines / 2, cols / 2}};
+    std::pair<int, int> direction = {0, -1};
 };
 
 
