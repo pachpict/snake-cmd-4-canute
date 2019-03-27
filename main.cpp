@@ -3,6 +3,11 @@
 #include <utility>
 #include <list>
 
+// From: https://stackoverflow.com/a/14997413/3806231
+int positive_modulo(int i, int n) {
+    return (i % n + n) % n;
+}
+
 int main()
 {
     initscr();
@@ -35,7 +40,10 @@ int main()
         }
 
         std::pair<int,int> current_front = snake.cells.front();
-        std::pair<int,int> new_front = {current_front.first + snake.direction.first, current_front.second + snake.direction.second};
+        std::pair<int,int> new_front = {
+                positive_modulo(current_front.first + snake.direction.first, COLS),
+                positive_modulo(current_front.second + snake.direction.second, LINES)
+        };
         snake.cells.push_front(new_front);
 
         snake.cells.pop_back();
