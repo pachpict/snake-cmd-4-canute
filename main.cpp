@@ -20,7 +20,7 @@ int main()
     getch();
 
     Snake snake(COLS, LINES);
-    std::pair<int,int> food = {random_int(COLS), random_int(LINES)};
+    std::pair<int,int> pellet = {random_int(COLS), random_int(LINES)};
 
     timeout(500);
     int key;
@@ -54,7 +54,7 @@ int main()
         for (std::pair<int,int> cell : snake.cells) {
             mvaddch(cell.second, cell.first, 'x');
         }
-        mvaddch(food.first, food.second, 'o');
+        mvaddch(pellet.first, pellet.second, 'o');
     } while (key != 27 && key != 'q');
 
     endwin();
