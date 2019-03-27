@@ -71,6 +71,7 @@ int main()
         mvaddch(pellet.second, pellet.first, 'o');
     } while (key != 27 && key != 'q');
     // TODO: Add "Game over" screen
+    // TODO: Game over when snake eats itself
 
     endwin();
 
