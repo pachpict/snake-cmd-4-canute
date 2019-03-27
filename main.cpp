@@ -23,9 +23,10 @@ int main()
     Snake snake(COLS, LINES);
     std::pair<int,int> pellet = {random_int(COLS - 1), random_int(LINES - 1)};
 
-    timeout(150);
     int key;
     do {
+        timeout(1000 / snake.cells.size());
+
         key = getch();
         switch (key) {
             case KEY_LEFT:
