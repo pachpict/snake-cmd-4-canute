@@ -1,5 +1,7 @@
 #include <ncurses.h>
 #include "Snake.h"
+#include <utility>
+#include <list>
 
 int main()
 {
