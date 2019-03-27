@@ -6,6 +6,7 @@ int main()
     initscr();
     cbreak();
     noecho();
+    keypad(stdscr, TRUE);
 
     clear();
     addstr("Snake");
