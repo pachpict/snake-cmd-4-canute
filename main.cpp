@@ -14,7 +14,8 @@ int main()
 
     Snake snake(COLS, LINES);
     timeout(500);
-    while (true) {
+    int key;
+    do {
         std::pair<int,int> current_front = snake.cells.front();
         std::pair<int,int> new_front = {current_front.first + snake.direction.first, current_front.second + snake.direction.second};
         snake.cells.push_front(new_front);
@@ -25,8 +26,22 @@ int main()
         for (std::pair<int,int> cell : snake.cells) {
             mvaddch(cell.second, cell.first, 'x');
         }
-        getch();
-    }
+        key = getch();
+        switch (key) {
+            case KEY_LEFT:
+                snake.direction = {-1, 0};
+                break;
+            case KEY_RIGHT:
+                snake.direction = {1, 0};
+                break;
+            case KEY_UP:
+                snake.direction = {0, -1};
+                break;
+            case KEY_DOWN:
+                snake.direction = {0, 1};
+                break;
+        }
+    } while (key != 27);
 
     endwin();
 
