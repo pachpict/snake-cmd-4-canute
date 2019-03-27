@@ -16,6 +16,7 @@ int main()
     noecho();
     keypad(stdscr, TRUE);
 
+    // TODO: Finish title screen
     clear();
     addstr("Snake");
     getch();
