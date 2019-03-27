@@ -50,7 +50,7 @@ int main()
         snake.cells.push_front(new_front);
 
         if (std::find(snake.cells.begin(), snake.cells.end(), pellet) != snake.cells.end()) {
-            pellet = {random_int(COLS), random_int(LINES)};
+            pellet = {random_int(COLS - 1), random_int(LINES - 1)};
         } else {
             snake.cells.pop_back();
         }
