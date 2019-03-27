@@ -18,16 +18,6 @@ int main()
     timeout(500);
     int key;
     do {
-        std::pair<int,int> current_front = snake.cells.front();
-        std::pair<int,int> new_front = {current_front.first + snake.direction.first, current_front.second + snake.direction.second};
-        snake.cells.push_front(new_front);
-
-        snake.cells.pop_back();
-
-        clear();
-        for (std::pair<int,int> cell : snake.cells) {
-            mvaddch(cell.second, cell.first, 'x');
-        }
         key = getch();
         switch (key) {
             case KEY_LEFT:
@@ -42,6 +32,17 @@ int main()
             case KEY_DOWN:
                 snake.direction = {0, 1};
                 break;
+        }
+
+        std::pair<int,int> current_front = snake.cells.front();
+        std::pair<int,int> new_front = {current_front.first + snake.direction.first, current_front.second + snake.direction.second};
+        snake.cells.push_front(new_front);
+
+        snake.cells.pop_back();
+
+        clear();
+        for (std::pair<int,int> cell : snake.cells) {
+            mvaddch(cell.second, cell.first, 'x');
         }
     } while (key != 27 && key != 'q');
 
