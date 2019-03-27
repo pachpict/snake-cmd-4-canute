@@ -7,7 +7,6 @@ int main()
 
     clear();
     addstr("Snake");
-    refresh();
 
     Snake snake(LINES, COLS);
     printw(",%d,%d",snake.cells.front().first,snake.cells.front().second);
