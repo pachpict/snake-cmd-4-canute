@@ -63,6 +63,7 @@ int main()
         }
         mvaddch(pellet.second, pellet.first, 'o');
     } while (key != 27 && key != 'q');
+    // TODO: Add "Game over" screen
 
     endwin();
 
