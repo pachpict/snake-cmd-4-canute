@@ -57,6 +57,7 @@ int main()
         }
 
         clear();
+        mvprintw(0, 0, "Score: %d", snake.cells.size()); // TODO: Might move this to separate window later
         for (std::pair<int,int> cell : snake.cells) {
             mvaddch(cell.second, cell.first, 'x');
         }
