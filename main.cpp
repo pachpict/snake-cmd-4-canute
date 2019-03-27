@@ -23,7 +23,7 @@ int main()
     Snake snake(COLS, LINES);
     std::pair<int,int> pellet = {random_int(COLS - 1), random_int(LINES - 1)};
 
-    timeout(500);
+    timeout(150);
     int key;
     do {
         key = getch();
