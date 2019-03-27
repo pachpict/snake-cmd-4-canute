@@ -3,6 +3,7 @@
 #include <utility>
 #include <list>
 #include <random>
+#include <algorithm>
 
 int positive_modulo(int i, int n);
 
@@ -20,7 +21,7 @@ int main()
     getch();
 
     Snake snake(COLS, LINES);
-    std::pair<int,int> pellet = {random_int(COLS), random_int(LINES)};
+    std::pair<int,int> pellet = {random_int(COLS - 1), random_int(LINES - 1)};
 
     timeout(500);
     int key;
@@ -48,13 +49,18 @@ int main()
         };
         snake.cells.push_front(new_front);
 
-        snake.cells.pop_back();
+        if (std::find(snake.cells.begin(), snake.cells.end(), pellet) != snake.cells.end()) {
+            pellet = {random_int(COLS), random_int(LINES)};
+        } else {
+            snake.cells.pop_back();
+        }
 
         clear();
+        mvprintw(0,0,"%d,%d,%d,%d",pellet.first,pellet.second,COLS,LINES);
         for (std::pair<int,int> cell : snake.cells) {
             mvaddch(cell.second, cell.first, 'x');
         }
-        mvaddch(pellet.first, pellet.second, 'o');
+        mvaddch(pellet.second, pellet.first, 'o');
     } while (key != 27 && key != 'q');
 
     endwin();
