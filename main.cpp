@@ -3,10 +3,7 @@
 #include <utility>
 #include <list>
 
-// From: https://stackoverflow.com/a/14997413/3806231
-int positive_modulo(int i, int n) {
-    return (i % n + n) % n;
-}
+int positive_modulo(int i, int n);
 
 int main()
 {
@@ -57,4 +54,9 @@ int main()
     endwin();
 
     return 0;
+}
+
+// From: https://stackoverflow.com/a/14997413/3806231
+int positive_modulo(int i, int n) {
+    return (i % n + n) % n;
 }
