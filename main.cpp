@@ -58,7 +58,13 @@ int main()
         }
 
         clear();
-        mvprintw(0, 0, "Score: %d", snake.cells.size()); // TODO: Might move this to separate window later
+        mvprintw(0, 0, "Score: %d", snake.cells.size()); // TODO: Might move these to separate window later
+        if (snake.cells.size() <= 3) {
+            attron(A_STANDOUT);
+            std::string message = "Hint: to move faster, press the arrow keys repeatedly.";
+            mvprintw(0, COLS - message.length(), message.c_str());
+            attroff(A_STANDOUT);
+        }
         for (std::pair<int,int> cell : snake.cells) {
             mvaddch(cell.second, cell.first, 'x');
         }
