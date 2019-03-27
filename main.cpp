@@ -73,6 +73,7 @@ int main()
     // TODO: Add "Game over" screen
     // TODO: Game over when snake eats itself
     // TODO: Add default case to switch to remove warning
+    // TODO: Add some way of displaying controls
 
     endwin();
 
