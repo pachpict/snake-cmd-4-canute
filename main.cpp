@@ -74,6 +74,7 @@ int main()
     // TODO: Game over when snake eats itself
     // TODO: Add default case to switch to remove warning
     // TODO: Add some way of displaying controls
+    // TODO: Different colours for snake and pellets
 
     endwin();
 
