@@ -75,6 +75,7 @@ int main()
     // TODO: Add default case to switch to remove warning
     // TODO: Add some way of displaying controls
     // TODO: Different colours for snake and pellets
+    // TODO: Hide cursor
 
     endwin();
 
