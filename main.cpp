@@ -121,6 +121,8 @@ int main()
     getch();
 
     // TODO: Add some way of displaying controls
+    // TODO: For actual game, make window fixed size so you can't cheat by making the terminal window bigger
+    // TODO: Prevent snake going back on itself
 
     endwin();
 
