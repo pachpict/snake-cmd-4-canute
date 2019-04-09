@@ -59,6 +59,8 @@ int main()
             case KEY_DOWN:
                 snake.direction = {0, 1};
                 break;
+            default:
+                break;
         }
 
         std::pair<int,int> current_front = snake.cells.front();
@@ -118,7 +120,6 @@ int main()
     printw("Press any key to exit");
     getch();
 
-    // TODO: Add default case to switch to remove warning
     // TODO: Add some way of displaying controls
     // TODO: Different colours for snake and pellets
 
