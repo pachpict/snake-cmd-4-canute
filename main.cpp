@@ -25,6 +25,7 @@ int main()
     std::pair<int,int> pellet = {random_int(COLS - 1), random_int(LINES - 1)};
 
     int key;
+    bool game_over;
     do {
         timeout(1000 / snake.cells.size());
 
@@ -57,6 +58,12 @@ int main()
             snake.cells.pop_back();
         }
 
+        // Game over if snake eats itself
+        // Specifically, this is if the snake cells list contains one or more duplicates
+        std::list<std::pair<int, int>> cells_copy = snake.cells;
+        cells_copy.sort();
+        game_over = (std::unique(cells_copy.begin(), cells_copy.end()) != cells_copy.end());
+
         clear();
         mvprintw(0, 0, "Score: %d", snake.cells.size()); // TODO: Might move these to separate window later
         if (snake.cells.size() <= 3) {
@@ -69,7 +76,7 @@ int main()
             mvaddch(cell.second, cell.first, 'x');
         }
         mvaddch(pellet.second, pellet.first, 'o');
-    } while (key != 27 && key != 'q');
+    } while (key != 27 && key != 'q' && !game_over);
     // TODO: Add "Game over" screen
     // TODO: Game over when snake eats itself
     // TODO: Add default case to switch to remove warning
