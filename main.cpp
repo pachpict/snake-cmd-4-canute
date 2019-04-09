@@ -85,7 +85,15 @@ int main()
         }
         mvaddch(pellet.second, pellet.first, 'o');
     } while (key != 27 && key != 'q' && !game_over);
-    // TODO: Add "Game over" screen
+
+    nodelay(stdscr, FALSE);
+
+    clear();
+    printw("Game over!\n");
+    printw("Score: %d\n\n", snake.cells.size());
+    printw("Press any key to exit");
+    getch();
+
     // TODO: Game over when snake eats itself
     // TODO: Add default case to switch to remove warning
     // TODO: Add some way of displaying controls
