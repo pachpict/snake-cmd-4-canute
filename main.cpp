@@ -15,6 +15,7 @@ int main()
     cbreak();
     noecho();
     keypad(stdscr, TRUE);
+    curs_set(1);
 
     bool use_color = has_colors();
     if (use_color) {
@@ -33,6 +34,8 @@ int main()
            "2019\n\n"
            "Press any key to start...");
     getch();
+
+    curs_set(0);
 
     Snake snake(COLS, LINES);
     std::pair<int,int> pellet = {random_int(COLS - 1), random_int(LINES - 1)};
@@ -107,6 +110,8 @@ int main()
 
     nodelay(stdscr, FALSE);
 
+    curs_set(1);
+
     clear();
     printw("Game over!\n");
     printw("Score: %d\n\n", snake.cells.size());
@@ -116,7 +121,6 @@ int main()
     // TODO: Add default case to switch to remove warning
     // TODO: Add some way of displaying controls
     // TODO: Different colours for snake and pellets
-    // TODO: Hide cursor
 
     endwin();
 
