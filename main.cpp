@@ -16,6 +16,13 @@ int main()
     noecho();
     keypad(stdscr, TRUE);
 
+    bool use_color = has_colors();
+    if (use_color) {
+        start_color();
+    }
+    init_pair(1, COLOR_CYAN, COLOR_BLACK); // Colour pair for snake
+    init_pair(2, COLOR_YELLOW, COLOR_BLACK); // Colour pair for pellets
+
     clear();
     addstr(" ____              _        \n"
            "/ ___| _ __   __ _| | _____ \n"
@@ -81,9 +88,21 @@ int main()
             attroff(A_STANDOUT);
         }
         for (std::pair<int,int> cell : snake.cells) {
+            if (use_color) {
+                attron(COLOR_PAIR(1));
+            }
             mvaddch(cell.second, cell.first, 'x');
+            if (use_color) {
+                attroff(COLOR_PAIR(1));
+            }
+        }
+        if (use_color) {
+            attron(COLOR_PAIR(2));
         }
         mvaddch(pellet.second, pellet.first, 'o');
+        if (use_color) {
+            attroff(COLOR_PAIR(2));
+        }
     } while (key != 27 && key != 'q' && !game_over);
 
     nodelay(stdscr, FALSE);
