@@ -121,7 +121,6 @@ int main()
     getch();
 
     // TODO: Add some way of displaying controls
-    // TODO: Different colours for snake and pellets
 
     endwin();
 
