@@ -52,7 +52,8 @@ int main()
         };
         snake.cells.push_front(new_front);
 
-        if (std::find(snake.cells.begin(), snake.cells.end(), pellet) != snake.cells.end()) {
+        auto find_pellet_it = std::find(snake.cells.begin(), snake.cells.end(), pellet);
+        if (find_pellet_it != snake.cells.end()) {
             pellet = {random_int(COLS - 1), random_int(LINES - 1)};
         } else {
             snake.cells.pop_back();
@@ -62,7 +63,8 @@ int main()
         // Specifically, this is if the snake cells list contains one or more duplicates
         std::list<std::pair<int, int>> cells_copy = snake.cells;
         cells_copy.sort();
-        game_over = (std::unique(cells_copy.begin(), cells_copy.end()) != cells_copy.end());
+        auto unique_it = std::unique(cells_copy.begin(), cells_copy.end());
+        game_over = (unique_it != cells_copy.end());
 
         clear();
         mvprintw(0, 0, "Score: %d", snake.cells.size()); // TODO: Might move these to separate window later
