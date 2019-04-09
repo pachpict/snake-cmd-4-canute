@@ -16,9 +16,15 @@ int main()
     noecho();
     keypad(stdscr, TRUE);
 
-    // TODO: Finish title screen
     clear();
-    addstr("Snake");
+    addstr(" ____              _        \n"
+           "/ ___| _ __   __ _| | _____ \n"
+           "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
+           " ___) | | | | (_| |   <  __/\n"
+           "|____/|_| |_|\\__,_|_|\\_\\___|\n\n"
+           "Ruben Dougall\n"
+           "2019\n\n"
+           "Press any key to start...");
     getch();
 
     Snake snake(COLS, LINES);
