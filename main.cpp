@@ -77,8 +77,7 @@ int main()
             snake.cells.pop_back();
         }
 
-        // Game over if snake eats itself
-        // Specifically, this is if the snake cells list contains one or more duplicates
+        // Game over if snake eats itself, i.e. if the snake cells list contains one or more duplicates
         std::list<std::pair<int, int>> cells_copy = snake.cells;
         cells_copy.sort();
         auto unique_it = std::unique(cells_copy.begin(), cells_copy.end());
