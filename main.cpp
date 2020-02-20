@@ -92,7 +92,6 @@ int main()
         auto unique_it = std::unique(cells_copy.begin(), cells_copy.end());
         game_over = (unique_it != cells_copy.end());
 
-//        clear();
         mvprintw(0, 0, "Score: %d", snake.cells.size()); // TODO: Might move these to separate window later
         if (snake.cells.size() <= 3) {
             attron(A_STANDOUT);
@@ -130,7 +129,6 @@ int main()
 
     // TODO: Add some way of displaying controls
     // TODO: For actual game, make window fixed size so you can't cheat by making the terminal window bigger (just don't use LINES or COLS variables)
-    // TODO: Prevent snake going back on itself
     // TODO: Allow option of borders on or off, i.e. to end game or just wrap around (respectively) when snake reaches edge of the screen
     // TODO: Finish commenting the code
 
