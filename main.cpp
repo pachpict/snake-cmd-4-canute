@@ -46,7 +46,6 @@ int main()
         timeout(1000 / snake.cells.size());
 
         key = getch();
-        clear();
 
         std::pair<int,int> new_direction;
         switch (key) {
@@ -67,7 +66,6 @@ int main()
                 break;
         }
         std::pair<int,int> new_direction_reversed = {-new_direction.first, -new_direction.second};
-        mvprintw(1, 1, "%d,%d", new_direction_reversed.first, new_direction_reversed.second);
         if (snake.direction != new_direction_reversed) {
             snake.direction = new_direction;
         }
@@ -92,6 +90,7 @@ int main()
         auto unique_it = std::unique(cells_copy.begin(), cells_copy.end());
         game_over = (unique_it != cells_copy.end());
 
+        clear();
         mvprintw(0, 0, "Score: %d", snake.cells.size()); // TODO: Might move these to separate window later
         if (snake.cells.size() <= 3) {
             attron(A_STANDOUT);
