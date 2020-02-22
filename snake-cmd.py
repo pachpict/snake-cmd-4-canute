@@ -27,8 +27,8 @@ def main(stdscr):
 
     curses.curs_set(0)
 
-    snake = Snake(curses.LINES, curses.COLS)
-    pellet = (randint(0, curses.LINES - 1), randint(0, curses.COLS - 1))
+    snake = Snake(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1])
+    pellet = (randint(0, stdscr.getmaxyx()[0] - 1), randint(0, stdscr.getmaxyx()[1] - 1))
 
     key = None
     game_over = False
@@ -54,12 +54,12 @@ def main(stdscr):
 
         current_front = snake.cells[0]
         # TODO: Use vector library
-        new_front = ((current_front[0] + snake.direction[0]) % curses.LINES,
-                     (current_front[1] + snake.direction[1]) % curses.COLS)
+        new_front = ((current_front[0] + snake.direction[0]) % stdscr.getmaxyx()[0],
+                     (current_front[1] + snake.direction[1]) % stdscr.getmaxyx()[1])
         snake.cells.insert(0, new_front)
 
         if pellet in snake.cells:
-            pellet = (randint(0, curses.LINES - 1), randint(0, curses.COLS - 1))
+            pellet = (randint(0, stdscr.getmaxyx()[0] - 1), randint(0, stdscr.getmaxyx()[1] - 1))
         else:
             snake.cells.pop()
 
@@ -72,7 +72,7 @@ def main(stdscr):
         if len(snake.cells) <= 3:
             stdscr.attron(curses.A_STANDOUT)
             message = "Hint: To move faster, repeatedly press or hold the arrow key."
-            stdscr.addstr(0, curses.COLS - len(message), message)
+            stdscr.addstr(0, stdscr.getmaxyx()[1] - len(message), message)
             stdscr.attroff(curses.A_STANDOUT)
 
         for cell in snake.cells:
