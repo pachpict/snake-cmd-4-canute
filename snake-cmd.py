@@ -32,7 +32,8 @@ def main(stdscr):
 
     key = None
     game_over = False
-    while key != 27 and key != "q" and not game_over:
+    # getch return value of 27 corresponds to escape key - doesn't look like curses has a constant for this
+    while key != 27 and key != ord("q") and not game_over:
         stdscr.timeout(1000 // len(snake.cells))
         key = stdscr.getch()
 
