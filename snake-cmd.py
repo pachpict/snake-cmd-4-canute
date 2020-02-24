@@ -22,6 +22,7 @@ def main(stdscr):
     score = show_game_screen(stdscr)
     curses.curs_set(1)
 
+    # TODO: Refactor this into separate method too
     stdscr.clear()
     stdscr.addstr("Game over!\n")
     stdscr.addstr(f"Score: {score}\n\n")
@@ -34,6 +35,7 @@ def main(stdscr):
     # TODO: Allow option of borders on or off, i.e. to end game or just wrap around (respectively) when snake reaches
     #  edge of the screen
     # TODO: Finish commenting the code
+    # TODO: Refactor screens into separate classes (?)
 
 
 def show_title_screen(stdscr):
@@ -54,20 +56,29 @@ def show_game_screen(stdscr):
 
     key = None
     # getch return value of 27 corresponds to escape key - doesn't look like curses has a constant for this
+    # 3rd condition checks if snake has "eaten" (intersected with) itself, i.e. whether any cells re-appear in the list
     while key != 27 and key != ord("q") and len(snake.cells) == len(set(snake.cells)):
+        # Set the maximum amount of time to block for a key press
+        # This is effectively the update interval
         stdscr.timeout(1000 // len(snake.cells))
         key = stdscr.getch()
 
+        # Update
         pellet = update_game_screen(stdscr, key, snake, pellet)
 
+        # Draw
         draw_game_screen(pellet, snake, stdscr)
 
+    # For user input, remove the timeout but keep blocking enabled
     stdscr.nodelay(False)
 
+    # Return score
     return len(snake.cells)
 
 
 def update_game_screen(stdscr, key, snake, pellet):
+    # Set new direction based on the key input
+    # If an arrow key wasn't pressed then continue in same direction
     if key == curses.KEY_LEFT:
         new_direction = (0, -1)
     elif key == curses.KEY_RIGHT:
@@ -79,35 +90,49 @@ def update_game_screen(stdscr, key, snake, pellet):
     else:
         new_direction = snake.direction
 
+    # Prevent the snake reversing on itself, i.e. check that the snake's current and new directions aren't the reverse
+    # of one another
     new_direction_reversed = (-new_direction[0], -new_direction[1])
     if snake.direction != new_direction_reversed:
         snake.direction = new_direction
 
+    #
     current_front = snake.cells[0]
     # TODO: Use vector library
     new_front = ((current_front[0] + snake.direction[0]) % stdscr.getmaxyx()[0],
                  (current_front[1] + snake.direction[1]) % stdscr.getmaxyx()[1])
     snake.cells.insert(0, new_front)
 
+    # If the snake just "ate" (intersected with) a pellet:
+    # * Effectively increase the length by 1, by not removing a cell to compensate for the one just added
+    # * Move the pellet to a random position
+    # If the snake didn't just "eat" a pellet:
+    # * Remove a cell to compensate for the one just added, so length of the snake stays the same
+    # * Obviously leave the pellet where it is
     if pellet in snake.cells:
         pellet = (randint(0, stdscr.getmaxyx()[0] - 1), randint(0, stdscr.getmaxyx()[1] - 1))
     else:
         snake.cells.pop()
 
+    # Return pellet so changes are reflected in the caller
+    # Don't need to return snake as it's only modified, not written to
     return pellet
 
 
 def draw_game_screen(pellet, snake, stdscr):
     stdscr.clear()
 
+    # Display score
     stdscr.addstr(0, 0, f"Score: {len(snake.cells)}")
 
+    # Display hint
     if len(snake.cells) <= 3:
         stdscr.attron(curses.A_STANDOUT)
         message = "Hint: To move faster, repeatedly press or hold the arrow key."
         stdscr.addstr(0, stdscr.getmaxyx()[1] - len(message), message)
         stdscr.attroff(curses.A_STANDOUT)
 
+    # Draw snake
     for cell in snake.cells:
         if curses.has_colors():
             stdscr.attron(curses.color_pair(1))
@@ -115,6 +140,7 @@ def draw_game_screen(pellet, snake, stdscr):
         if curses.has_colors():
             stdscr.attroff(curses.color_pair(1))
 
+    # Draw pellet
     if curses.has_colors():
         stdscr.attron(curses.color_pair(2))
     stdscr.addch(pellet[0], pellet[1], "o")
