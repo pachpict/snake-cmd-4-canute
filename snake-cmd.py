@@ -72,7 +72,7 @@ def show_game_screen(stdscr):
         pellet = update_game_screen(stdscr, key, snake, pellet)
 
         # Draw
-        draw_game_screen(pellet, snake, stdscr)
+        draw_game_screen(stdscr, snake, pellet)
 
     # For user input, remove the timeout but keep blocking enabled
     stdscr.nodelay(False)
@@ -124,7 +124,7 @@ def update_game_screen(stdscr, key, snake, pellet):
     return pellet
 
 
-def draw_game_screen(pellet, snake, stdscr):
+def draw_game_screen(stdscr, snake, pellet):
     stdscr.clear()
 
     # Display score
