@@ -38,11 +38,15 @@ def main(stdscr):
     # TODO: Fix error when resizing window during playing (?)
 
 
-def show_game_over_screen(stdscr, score):
-    stdscr.clear()
-    stdscr.addstr("Game over!\n")
-    stdscr.addstr(f"Score: {score}\n\n")
-    stdscr.addstr("Press any key to exit...")
+def show_title_screen(stdscr):
+    stdscr.addstr(" ____              _        \n"
+                  "/ ___| _ __   __ _| | _____ \n"
+                  "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
+                  " ___) | | | | (_| |   <  __/\n"
+                  "|____/|_| |_|\\__,_|_|\\_\\___|\n\n"
+                  "Ruben Dougall\n"
+                  "2019\n\n"
+                  "Press any key to start...")
     stdscr.getch()
 
 
@@ -144,15 +148,11 @@ def draw_game_screen(stdscr, snake, pellet):
         stdscr.attroff(curses.color_pair(2))
 
 
-def show_title_screen(stdscr):
-    stdscr.addstr(" ____              _        \n"
-                  "/ ___| _ __   __ _| | _____ \n"
-                  "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
-                  " ___) | | | | (_| |   <  __/\n"
-                  "|____/|_| |_|\\__,_|_|\\_\\___|\n\n"
-                  "Ruben Dougall\n"
-                  "2019\n\n"
-                  "Press any key to start...")
+def show_game_over_screen(stdscr, score):
+    stdscr.clear()
+    stdscr.addstr("Game over!\n")
+    stdscr.addstr(f"Score: {score}\n\n")
+    stdscr.addstr("Press any key to exit...")
     stdscr.getch()
 
 
