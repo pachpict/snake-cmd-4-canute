@@ -122,16 +122,6 @@ def update_game_screen(stdscr, key, snake, pellet):
 def draw_game_screen(stdscr, snake, pellet):
     stdscr.clear()
 
-    # Display score
-    stdscr.addstr(0, 0, f"Score: {len(snake.cells)}")
-
-    # Display hint
-    if len(snake.cells) <= 3:
-        stdscr.attron(curses.A_STANDOUT)
-        message = "Hint: To move faster, repeatedly press or hold the arrow key."
-        stdscr.addstr(0, stdscr.getmaxyx()[1] - len(message), message)
-        stdscr.attroff(curses.A_STANDOUT)
-
     # Draw snake
     for cell in snake.cells:
         if curses.has_colors():
@@ -146,6 +136,16 @@ def draw_game_screen(stdscr, snake, pellet):
     stdscr.addch(pellet[0], pellet[1], "o")
     if curses.has_colors():
         stdscr.attroff(curses.color_pair(2))
+
+    # Display score
+    stdscr.addstr(0, 0, f"Score: {len(snake.cells)}")
+
+    # Display hint
+    if len(snake.cells) <= 3:
+        stdscr.attron(curses.A_STANDOUT)
+        message = "Hint: To move faster, repeatedly press or hold the arrow key."
+        stdscr.addstr(0, stdscr.getmaxyx()[1] - len(message), message)
+        stdscr.attroff(curses.A_STANDOUT)
 
 
 def show_game_over_screen(stdscr, score):
