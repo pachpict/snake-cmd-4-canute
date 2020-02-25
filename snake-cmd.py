@@ -39,15 +39,29 @@ def main(stdscr):
 
 
 def show_title_screen(stdscr):
-    stdscr.addstr(" ____              _        \n"
-                  "/ ___| _ __   __ _| | _____ \n"
-                  "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
-                  " ___) | | | | (_| |   <  __/\n"
-                  "|____/|_| |_|\\__,_|_|\\_\\___|\n\n"
-                  "Ruben Dougall\n"
-                  "2019\n\n"
-                  "Press any key to start...")
+    stdscr.addstr(*center_text(stdscr, " ____              _        \n"
+                                       "/ ___| _ __   __ _| | _____ \n"
+                                       "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
+                                       " ___) | | | | (_| |   <  __/\n"
+                                       "|____/|_| |_|\\__,_|_|\\_\\___|\n\n"
+                                       "Ruben Dougall\n"
+                                       "2019\n\n"
+                                       "Press any key to start..."))
     stdscr.getch()
+
+
+def center_text(stdscr, text):
+    window_width = stdscr.getmaxyx()[1]
+    window_left = stdscr.getbegyx()[1]
+
+    # The input text may contain multiple lines
+    # The overall width of the text is the length of the longest line
+    string_lines = text.split("\n")
+    text_width = max(map(len, string_lines))
+
+    text_left = window_left + ((window_width - text_width) // 2)
+
+    return 0, text_left, text
 
 
 def show_game_screen(stdscr):
