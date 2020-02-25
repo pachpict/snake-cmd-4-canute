@@ -5,7 +5,7 @@ from random import randint
 class Snake:
     def __init__(self, lines, cols):
         self.cells = [(lines // 2, cols // 2)]
-        self.direction = (0, -1)
+        self.direction = (-1, 0)
 
 
 def main(stdscr):
