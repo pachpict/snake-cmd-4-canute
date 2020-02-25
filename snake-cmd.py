@@ -9,17 +9,22 @@ class Snake:
 
 
 def main(stdscr):
+    # Initialise colours
     curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK)
 
+    # Show cursor
     curses.curs_set(1)
 
     stdscr.clear()
     show_title_screen(stdscr)
 
+    # Hide cursor
     curses.curs_set(0)
 
     score = show_game_screen(stdscr)
+
+    # Show cursor
     curses.curs_set(1)
 
     # TODO: Refactor this into separate method too
@@ -34,7 +39,6 @@ def main(stdscr):
     #  use LINES or COLS variables)
     # TODO: Allow option of borders on or off, i.e. to end game or just wrap around (respectively) when snake reaches
     #  edge of the screen
-    # TODO: Finish commenting the code
     # TODO: Refactor screens into separate classes (?)
 
 
