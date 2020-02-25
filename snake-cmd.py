@@ -40,6 +40,7 @@ def main(stdscr):
     # TODO: Allow option of borders on or off, i.e. to end game or just wrap around (respectively) when snake reaches
     #  edge of the screen
     # TODO: Refactor screens into separate classes (?)
+    # TODO: Fix error when resizing window during playing (?)
 
 
 def show_title_screen(stdscr):
