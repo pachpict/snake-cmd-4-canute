@@ -27,12 +27,7 @@ def main(stdscr):
     # Show cursor
     curses.curs_set(1)
 
-    # TODO: Refactor this into separate method too
-    stdscr.clear()
-    stdscr.addstr("Game over!\n")
-    stdscr.addstr(f"Score: {score}\n\n")
-    stdscr.addstr("Press any key to exit...")
-    stdscr.getch()
+    show_game_over_screen(stdscr, score)
 
     # TODO: Add some way of displaying controls
     # TODO: For actual game, make window fixed size so you can't cheat by making the terminal window bigger (just don't
@@ -43,15 +38,11 @@ def main(stdscr):
     # TODO: Fix error when resizing window during playing (?)
 
 
-def show_title_screen(stdscr):
-    stdscr.addstr(" ____              _        \n"
-                  "/ ___| _ __   __ _| | _____ \n"
-                  "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
-                  " ___) | | | | (_| |   <  __/\n"
-                  "|____/|_| |_|\\__,_|_|\\_\\___|\n\n"
-                  "Ruben Dougall\n"
-                  "2019\n\n"
-                  "Press any key to start...")
+def show_game_over_screen(stdscr, score):
+    stdscr.clear()
+    stdscr.addstr("Game over!\n")
+    stdscr.addstr(f"Score: {score}\n\n")
+    stdscr.addstr("Press any key to exit...")
     stdscr.getch()
 
 
@@ -151,6 +142,18 @@ def draw_game_screen(stdscr, snake, pellet):
     stdscr.addch(pellet[0], pellet[1], "o")
     if curses.has_colors():
         stdscr.attroff(curses.color_pair(2))
+
+
+def show_title_screen(stdscr):
+    stdscr.addstr(" ____              _        \n"
+                  "/ ___| _ __   __ _| | _____ \n"
+                  "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
+                  " ___) | | | | (_| |   <  __/\n"
+                  "|____/|_| |_|\\__,_|_|\\_\\___|\n\n"
+                  "Ruben Dougall\n"
+                  "2019\n\n"
+                  "Press any key to start...")
+    stdscr.getch()
 
 
 if __name__ == "__main__":
