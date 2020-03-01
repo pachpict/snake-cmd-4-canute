@@ -196,9 +196,12 @@ def draw_game_screen(stdscr, snake, pellet):
 
 def show_game_over_screen(stdscr, score):
     stdscr.clear()
-    stdscr.addstr("Game over!\n")
-    stdscr.addstr(f"Score: {score}\n\n")
-    stdscr.addstr("Press any key to exit...")
+
+    y = 0
+    y += addstr_multiline_aligned(stdscr, y, "Game over!\n", HorizontalAlignment.CENTER)
+    y += addstr_multiline_aligned(stdscr, y, f"Score: {score}\n\n", HorizontalAlignment.CENTER)
+    y += addstr_multiline_aligned(stdscr, y, "Press any key to exit...", HorizontalAlignment.CENTER)
+
     stdscr.getch()
 
 
