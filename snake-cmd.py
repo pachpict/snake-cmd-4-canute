@@ -49,10 +49,10 @@ def show_title_screen(stdscr):
 
     y = 0
     y += addstr_multiline_aligned(stdscr, y, " ____              _        \n"
-                           "/ ___| _ __   __ _| | _____ \n"
-                           "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
-                           " ___) | | | | (_| |   <  __/\n"
-                           "|____/|_| |_|\\__,_|_|\\_\\___|\n", HorizontalAlignment.CENTER)
+                                             "/ ___| _ __   __ _| | _____ \n"
+                                             "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
+                                             " ___) | | | | (_| |   <  __/\n"
+                                             "|____/|_| |_|\\__,_|_|\\_\\___|\n", HorizontalAlignment.CENTER)
     y += addstr_multiline_aligned(stdscr, y, "Ruben Dougall", HorizontalAlignment.CENTER)
     y += addstr_multiline_aligned(stdscr, y, "2019\n", HorizontalAlignment.CENTER)
     y += addstr_multiline_aligned(stdscr, y, "Press any key to start...", HorizontalAlignment.CENTER)
