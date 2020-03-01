@@ -23,7 +23,6 @@ def main(stdscr):
     # Show cursor
     curses.curs_set(1)
 
-    stdscr.clear()
     show_title_screen(stdscr)
 
     # Hide cursor
@@ -46,6 +45,8 @@ def main(stdscr):
 
 
 def show_title_screen(stdscr):
+    stdscr.clear()
+
     y = 0
     y += addstr_multiline_aligned(stdscr, y, " ____              _        \n"
                            "/ ___| _ __   __ _| | _____ \n"
@@ -54,7 +55,7 @@ def show_title_screen(stdscr):
                            "|____/|_| |_|\\__,_|_|\\_\\___|\n", HorizontalAlignment.CENTER)
     y += addstr_multiline_aligned(stdscr, y, "Ruben Dougall", HorizontalAlignment.CENTER)
     y += addstr_multiline_aligned(stdscr, y, "2019\n", HorizontalAlignment.CENTER)
-    addstr_multiline_aligned(stdscr, y, "Press any key to start...", HorizontalAlignment.CENTER)
+    y += addstr_multiline_aligned(stdscr, y, "Press any key to start...", HorizontalAlignment.CENTER)
     stdscr.getch()
 
 
