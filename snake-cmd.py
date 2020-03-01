@@ -1,11 +1,18 @@
 import curses
 from random import randint
+from enum import Enum, auto
 
 
 class Snake:
     def __init__(self, lines, cols):
         self.cells = [(lines // 2, cols // 2)]
         self.direction = (-1, 0)
+
+
+class HorizontalAlignment(Enum):
+    LEFT = auto()
+    CENTER = auto()
+    RIGHT = auto()
 
 
 def main(stdscr):
@@ -39,29 +46,54 @@ def main(stdscr):
 
 
 def show_title_screen(stdscr):
-    stdscr.addstr(*center_text(stdscr, " ____              _        \n"
-                                       "/ ___| _ __   __ _| | _____ \n"
-                                       "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
-                                       " ___) | | | | (_| |   <  __/\n"
-                                       "|____/|_| |_|\\__,_|_|\\_\\___|\n\n"
-                                       "Ruben Dougall\n"
-                                       "2019\n\n"
-                                       "Press any key to start..."))
+    y = 0
+    y += addstr_multiline_aligned(stdscr, y, " ____              _        \n"
+                           "/ ___| _ __   __ _| | _____ \n"
+                           "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
+                           " ___) | | | | (_| |   <  __/\n"
+                           "|____/|_| |_|\\__,_|_|\\_\\___|\n", HorizontalAlignment.CENTER)
+    y += addstr_multiline_aligned(stdscr, y, "Ruben Dougall", HorizontalAlignment.CENTER)
+    y += addstr_multiline_aligned(stdscr, y, "2019\n", HorizontalAlignment.CENTER)
+    addstr_multiline_aligned(stdscr, y, "Press any key to start...", HorizontalAlignment.CENTER)
     stdscr.getch()
 
 
-def center_text(stdscr, text):
+def addstr_multiline_aligned(stdscr, y, text, alignment=HorizontalAlignment.LEFT):
+    return addstr_multiline(stdscr, y, align_text(stdscr, text, alignment), text)
+
+
+# Passing a multi-line string and a position to addstr will mean that the first line begins at that position but the
+# following lines will start at the 0th column
+# This function prints the text so the lines are horizontally aligned
+def addstr_multiline(stdscr, y, x, text):
+    lines = text.split("\n")
+    for line in lines:
+        stdscr.addstr(y, x, line)
+        y += 1
+
+    return len(lines)
+
+
+# Calculates column the text should start at (i.e. the argument x for the addstr method) when aligned using the given
+# alignment
+def align_text(stdscr, text, alignment):
     window_width = stdscr.getmaxyx()[1]
     window_left = stdscr.getbegyx()[1]
 
     # The input text may contain multiple lines
     # The overall width of the text is the length of the longest line
-    string_lines = text.split("\n")
-    text_width = max(map(len, string_lines))
+    lines = text.split("\n")
+    text_width = max(map(len, lines))
 
-    text_left = window_left + ((window_width - text_width) // 2)
+    if alignment == HorizontalAlignment.RIGHT:
+        window_right = window_left + window_width - 1
+        text_left = window_right - text_width + 1
+    elif alignment == HorizontalAlignment.CENTER:
+        text_left = window_left + ((window_width - text_width) // 2)
+    else:
+        text_left = 0
 
-    return 0, text_left, text
+    return text_left
 
 
 def show_game_screen(stdscr):
