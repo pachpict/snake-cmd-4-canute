@@ -15,6 +15,12 @@ class HorizontalAlignment(Enum):
     RIGHT = auto()
 
 
+class VerticalAlignment(Enum):
+    TOP = auto()
+    CENTER = auto()
+    BOTTOM = auto()
+
+
 def main(stdscr):
     # Initialise colours
     curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
@@ -46,55 +52,78 @@ def main(stdscr):
 
 def show_title_screen(stdscr):
     stdscr.clear()
-
-    y = 0
-    y += addstr_multiline_aligned(stdscr, y, " ____              _        \n"
-                                             "/ ___| _ __   __ _| | _____ \n"
-                                             "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
-                                             " ___) | | | | (_| |   <  __/\n"
-                                             "|____/|_| |_|\\__,_|_|\\_\\___|\n", HorizontalAlignment.CENTER)
-    y += addstr_multiline_aligned(stdscr, y, "Ruben Dougall", HorizontalAlignment.CENTER)
-    y += addstr_multiline_aligned(stdscr, y, "2019\n", HorizontalAlignment.CENTER)
-    y += addstr_multiline_aligned(stdscr, y, "Press any key to start...", HorizontalAlignment.CENTER)
+    addstr_multiline_aligned(stdscr, [
+        " ____              _        \n"
+        "/ ___| _ __   __ _| | _____ \n"
+        "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
+        " ___) | | | | (_| |   <  __/\n"
+        "|____/|_| |_|\\__,_|_|\\_\\___|",
+        "",
+        "Ruben Dougall",
+        "2019",
+        "",
+        "Press any key to start..."
+    ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
     stdscr.getch()
 
 
-def addstr_multiline_aligned(stdscr, y, text, alignment=HorizontalAlignment.LEFT):
-    return addstr_multiline(stdscr, y, align_text(stdscr, text, alignment), text)
+def addstr_multiline_aligned(stdscr, strings, horizontal_alignment=HorizontalAlignment.LEFT,
+                             vertical_alignment=VerticalAlignment.TOP):
+    y = vertically_align_text(stdscr, strings, vertical_alignment)
+    for string in strings:
+        lines = string.split("\n")
+        x = horizontally_align_text(stdscr, string, horizontal_alignment)
+        for line in lines:
+            stdscr.addstr(y, x, line)
+            y += 1
 
 
-# Passing a multi-line string and a position to addstr will mean that the first line begins at that position but the
-# following lines will start at the 0th column
-# This function prints the text so the lines are horizontally aligned
-def addstr_multiline(stdscr, y, x, text):
-    lines = text.split("\n")
-    for line in lines:
-        stdscr.addstr(y, x, line)
-        y += 1
-
-    return len(lines)
-
-
+# TODO: Might refactor these later
 # Calculates column the text should start at (i.e. the argument x for the addstr method) when aligned using the given
 # alignment
-def align_text(stdscr, text, alignment):
+def horizontally_align_text(stdscr, string, alignment):
     window_width = stdscr.getmaxyx()[1]
     window_left = stdscr.getbegyx()[1]
 
     # The input text may contain multiple lines
     # The overall width of the text is the length of the longest line
-    lines = text.split("\n")
+    lines = string.split("\n")
     text_width = max(map(len, lines))
 
     if alignment == HorizontalAlignment.RIGHT:
         window_right = window_left + window_width - 1
         text_left = window_right - text_width + 1
     elif alignment == HorizontalAlignment.CENTER:
-        text_left = window_left + ((window_width - 1) // 2) - (text_width // 2)
+        text_left = center(text_width, window_left, window_width)
     else:
         text_left = 0
 
     return text_left
+
+
+# Calculates line the text should start at (i.e. the argument y for the addstr method) when aligned using the given
+# alignment
+def vertically_align_text(stdscr, strings, alignment):
+    window_height = stdscr.getmaxyx()[0]
+    window_top = stdscr.getbegyx()[0]
+
+    # The input text may contain multiple lines
+    # The overall height of the text is the number of lines in each string summed up
+    text_height = sum(map(lambda string: len(string.split("\n")), strings))
+
+    if alignment == VerticalAlignment.BOTTOM:
+        window_right = window_top + window_height - 1
+        text_top = window_right - text_height + 1
+    elif alignment == VerticalAlignment.CENTER:
+        text_top = center(text_height, window_top, window_height)
+    else:
+        text_top = 0
+
+    return text_top
+
+
+def center(text_size, window_min, window_size):
+    return window_min + ((window_size - 1) // 2) - (text_size // 2)
 
 
 def show_game_screen(stdscr):
@@ -197,12 +226,12 @@ def draw_game_screen(stdscr, snake, pellet):
 
 def show_game_over_screen(stdscr, score):
     stdscr.clear()
-
-    y = 0
-    y += addstr_multiline_aligned(stdscr, y, "Game over!\n", HorizontalAlignment.CENTER)
-    y += addstr_multiline_aligned(stdscr, y, f"Score: {score}\n\n", HorizontalAlignment.CENTER)
-    y += addstr_multiline_aligned(stdscr, y, "Press any key to exit...", HorizontalAlignment.CENTER)
-
+    addstr_multiline_aligned(stdscr, [
+        "Game over!",
+        f"Score: {score}",
+        "",
+        "Press any key to exit..."
+    ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
     stdscr.getch()
 
 
