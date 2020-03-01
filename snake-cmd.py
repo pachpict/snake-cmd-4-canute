@@ -90,7 +90,7 @@ def align_text(stdscr, text, alignment):
         window_right = window_left + window_width - 1
         text_left = window_right - text_width + 1
     elif alignment == HorizontalAlignment.CENTER:
-        text_left = window_left + ((window_width - text_width) // 2)
+        text_left = window_left + ((window_width - 1) // 2) - (text_width // 2)
     else:
         text_left = 0
 
