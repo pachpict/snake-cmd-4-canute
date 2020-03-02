@@ -47,6 +47,9 @@ def main(stdscr):
     #  edge of the screen
     # TODO: Refactor screens into separate classes (?)
     # TODO: Fix error when resizing window during playing (?)
+    # TODO: Fix text potentially covering up snake or pellets (e.g. change background of text character to match
+    #  snake/pellet character colour or alternate between text character and snake/pellet character)
+    # TODO: Add animation
 
 
 def show_title_screen(stdscr):
@@ -158,7 +161,7 @@ def show_game_screen(stdscr):
         # Set the maximum amount of time to block for a key press
         # This is effectively the update interval
         stdscr.timeout(1000 // len(snake.cells))
-        key = stdscr.getch()
+        key = stdscr.getch()  # TODO: Do this last to prevent waiting before drawing game screen
 
         # Update
         pellet = update_game_screen(stdscr, key, snake, pellet)
