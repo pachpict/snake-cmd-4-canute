@@ -41,7 +41,6 @@ def main(stdscr):
 
     show_game_over_screen(stdscr, score)
 
-    # TODO: Add some way of displaying controls
     # TODO: For actual game, make window fixed size so you can't cheat by making the terminal window bigger (just don't
     #  use LINES or COLS variables)
     # TODO: Allow option of borders on or off, i.e. to end game or just wrap around (respectively) when snake reaches
@@ -51,18 +50,40 @@ def main(stdscr):
 
 
 def show_title_screen(stdscr):
+    finished = False
+    while not finished:
+        stdscr.clear()
+
+        addstr_multiline_aligned(stdscr, [
+            " ____              _        \n"
+            "/ ___| _ __   __ _| | _____ \n"
+            "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
+            " ___) | | | | (_| |   <  __/\n"
+            "|____/|_| |_|\\__,_|_|\\_\\___|",
+            "",
+            "Ruben Dougall",
+            "2019",
+            "",
+            "Press C to view controls...",
+            "Press any key to start..."
+        ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
+
+        key = stdscr.getch()
+        if key == ord("c"):
+            show_controls_screen(stdscr)
+        else:
+            finished = True
+
+
+def show_controls_screen(stdscr):
     stdscr.clear()
     addstr_multiline_aligned(stdscr, [
-        " ____              _        \n"
-        "/ ___| _ __   __ _| | _____ \n"
-        "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
-        " ___) | | | | (_| |   <  __/\n"
-        "|____/|_| |_|\\__,_|_|\\_\\___|",
+        "In-Game Controls",
         "",
-        "Ruben Dougall",
-        "2019",
+        "← ↑ → ↓ - Change direction (hold to move faster)",
+        "Q - End game",
         "",
-        "Press any key to start..."
+        "Press any key to close this screen..."
     ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
     stdscr.getch()
 
