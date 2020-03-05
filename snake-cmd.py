@@ -50,6 +50,7 @@ def main(stdscr):
     # TODO: Fix text potentially covering up snake or pellets (e.g. change background of text character to match
     #  snake/pellet character colour or alternate between text character and snake/pellet character)
     # TODO: Add animation
+    # TODO: Add settings screen (?)
 
 
 def show_title_screen(stdscr):
