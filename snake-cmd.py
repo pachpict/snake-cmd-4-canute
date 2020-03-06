@@ -108,7 +108,7 @@ def show_settings_screen(stdscr, settings):
         addstr_multiline_aligned(stdscr, [
             "Settings",
             ""
-        ] + [f"{x['key']} - {x['name']} ({x['value']})" for x in settings.values()] + [
+        ] + [f"{x['key'].upper()} - {x['name']} ({x['value']})" for x in settings.values()] + [
             "",
             "Press any key to close this screen..."
         ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
