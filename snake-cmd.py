@@ -109,9 +109,9 @@ def show_settings_screen(stdscr, settings):
             "Settings",
             ""
         ] + [f"{x['key'].upper()} - {x['name']} ({x['value']})" for x in settings.values()] + [
-            "",
-            "Press any key to close this screen..."
-        ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
+                                     "",
+                                     "Press any key to close this screen..."
+                                 ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
 
         key = stdscr.getch()
         setting = next((x for x in settings.values() if key == ord(x["key"])), None)
@@ -194,7 +194,9 @@ def show_game_screen(stdscr, settings):
         key = stdscr.getch()  # TODO: Do this last to prevent waiting before drawing game screen
 
         # Update
-        pellet = update_game_screen(stdscr, key, snake, pellet)
+        (game_over, pellet) = update_game_screen(stdscr, key, snake, pellet, settings)
+        if game_over:
+            break
 
         # Draw
         draw_game_screen(stdscr, snake, pellet)
@@ -206,7 +208,7 @@ def show_game_screen(stdscr, settings):
     return len(snake.cells)
 
 
-def update_game_screen(stdscr, key, snake, pellet):
+def update_game_screen(stdscr, key, snake, pellet, settings):
     # Set new direction based on the key input
     # If an arrow key wasn't pressed then continue in same direction
     if key == curses.KEY_LEFT:
@@ -229,8 +231,11 @@ def update_game_screen(stdscr, key, snake, pellet):
     #
     current_front = snake.cells[0]
     # TODO: Use vector library
-    new_front = ((current_front[0] + snake.direction[0]) % stdscr.getmaxyx()[0],
-                 (current_front[1] + snake.direction[1]) % stdscr.getmaxyx()[1])
+    new_front = (current_front[0] + snake.direction[0], current_front[1] + snake.direction[1])
+    if not settings["snake_wrapping"]["value"] and (new_front[0] < 0 or new_front[0] >= stdscr.getmaxyx()[0]
+                                                    or new_front[1] < 0 or new_front[1] >= stdscr.getmaxyx()[1]):
+        return True, pellet
+    new_front = (new_front[0] % stdscr.getmaxyx()[0], new_front[1] % stdscr.getmaxyx()[1])
     snake.cells.insert(0, new_front)
 
     # If the snake just "ate" (intersected with) a pellet:
@@ -244,9 +249,7 @@ def update_game_screen(stdscr, key, snake, pellet):
     else:
         snake.cells.pop()
 
-    # Return pellet so changes are reflected in the caller
-    # Don't need to return snake as it's only modified, not written to
-    return pellet
+    return False, pellet
 
 
 def draw_game_screen(stdscr, snake, pellet):
