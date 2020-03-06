@@ -29,12 +29,19 @@ def main(stdscr):
     # Show cursor
     curses.curs_set(1)
 
-    show_title_screen(stdscr)
+    settings = {
+        "snake_wrapping": {
+            "name": "Snake wraps around screen edge",
+            "key": "b",
+            "value": True
+        }
+    }
+    show_title_screen(stdscr, settings)
 
     # Hide cursor
     curses.curs_set(0)
 
-    score = show_game_screen(stdscr)
+    score = show_game_screen(stdscr, settings)
 
     # Show cursor
     curses.curs_set(1)
@@ -50,10 +57,9 @@ def main(stdscr):
     # TODO: Fix text potentially covering up snake or pellets (e.g. change background of text character to match
     #  snake/pellet character colour or alternate between text character and snake/pellet character)
     # TODO: Add animation
-    # TODO: Add settings screen (?)
 
 
-def show_title_screen(stdscr):
+def show_title_screen(stdscr, settings):
     finished = False
     while not finished:
         stdscr.clear()
@@ -69,12 +75,15 @@ def show_title_screen(stdscr):
             "2019",
             "",
             "Press C to view controls...",
+            "Press S to change settings...",
             "Press any key to start..."
         ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
 
         key = stdscr.getch()
         if key == ord("c"):
             show_controls_screen(stdscr)
+        elif key == ord("s"):
+            show_settings_screen(stdscr, settings)
         else:
             finished = True
 
@@ -90,6 +99,26 @@ def show_controls_screen(stdscr):
         "Press any key to close this screen..."
     ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
     stdscr.getch()
+
+
+def show_settings_screen(stdscr, settings):
+    finished = False
+    while not finished:
+        stdscr.clear()
+        addstr_multiline_aligned(stdscr, [
+            "Settings",
+            ""
+        ] + [f"{x['key']} - {x['name']} ({x['value']})" for x in settings.values()] + [
+            "",
+            "Press any key to close this screen..."
+        ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
+
+        key = stdscr.getch()
+        setting = next((x for x in settings.values() if key == ord(x["key"])), None)
+        if setting is None:
+            finished = True
+        else:
+            setting["value"] = not setting["value"]
 
 
 def addstr_multiline_aligned(stdscr, strings, horizontal_alignment=HorizontalAlignment.LEFT,
@@ -151,7 +180,7 @@ def center(text_size, window_min, window_size):
     return window_min + ((window_size - 1) // 2) - (text_size // 2)
 
 
-def show_game_screen(stdscr):
+def show_game_screen(stdscr, settings):
     snake = Snake(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1])
     pellet = (randint(0, stdscr.getmaxyx()[0] - 1), randint(0, stdscr.getmaxyx()[1] - 1))
 
