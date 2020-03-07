@@ -4,8 +4,8 @@ from enum import Enum, auto
 
 
 class Snake:
-    def __init__(self, lines, cols):
-        self.cells = [(lines // 2, cols // 2)]
+    def __init__(self, stdscr, initial_length):
+        self.cells = [((stdscr.getmaxyx()[0] // 2) + x, stdscr.getmaxyx()[1] // 2) for x in range(initial_length)]
         self.direction = (-1, 0)
 
 
@@ -181,7 +181,7 @@ def center(text_size, window_min, window_size):
 
 
 def show_game_screen(stdscr, settings):
-    snake = Snake(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1])
+    snake = Snake(stdscr, 1)
     pellet = (randint(0, stdscr.getmaxyx()[0] - 1), randint(0, stdscr.getmaxyx()[1] - 1))
 
     key = None
