@@ -5,7 +5,7 @@ Command-line version of the classic Snake game.
 ![alt text](https://raw.githubusercontent.com/Ruben9922/snake-cmd/master/screenshot1.gif)
 
 ## Usage
-You should be able to run the application using:
+You should be able to run the application using the following command:
 ```bash
 ruben-snake-cmd
 ```
