@@ -21,7 +21,7 @@ class VerticalAlignment(Enum):
     BOTTOM = auto()
 
 
-def main(stdscr):
+def curses_main(stdscr):
     # Initialise colours
     curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK)
@@ -301,5 +301,9 @@ def show_game_over_screen(stdscr, score):
     stdscr.getch()
 
 
+def main():
+    curses.wrapper(curses_main)
+
+
 if __name__ == "__main__":
-    curses.wrapper(main)
+    main()
