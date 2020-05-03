@@ -267,7 +267,12 @@ def draw_game_screen(stdscr, snake, pellet):
     # Draw pellet
     if curses.has_colors():
         stdscr.attron(curses.color_pair(2))
-    stdscr.addch(pellet[0], pellet[1], "o")
+
+    try:
+        stdscr.addch(pellet[0], pellet[1], "o")
+    except curses.error as e:  # Ignore error when writing to bottom-right corner of window
+        pass
+
     if curses.has_colors():
         stdscr.attroff(curses.color_pair(2))
 
@@ -275,7 +280,12 @@ def draw_game_screen(stdscr, snake, pellet):
     for cell in snake.cells:
         if curses.has_colors():
             stdscr.attron(curses.color_pair(1))
-        stdscr.addch(cell[0], cell[1], "x")
+
+        try:
+            stdscr.addch(cell[0], cell[1], "x")
+        except curses.error as e:  # Ignore error when writing to bottom-right corner of window
+            pass
+
         if curses.has_colors():
             stdscr.attroff(curses.color_pair(1))
 
