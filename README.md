@@ -2,7 +2,7 @@
 
 Command-line version of the classic Snake game.
 
-![alt text](screenshot1.gif)
+![alt text](https://raw.githubusercontent.com/Ruben9922/snake-cmd/master/screenshot1.gif)
 
 ## Usage
 You should be able to run the application using:
