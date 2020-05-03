@@ -22,4 +22,5 @@ setuptools.setup(
     entry_points={
         'console_scripts': ['ruben-snake-cmd=snake_cmd:main'],
     },
+    py_modules=['snake_cmd'],
 )
