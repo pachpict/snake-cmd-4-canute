@@ -72,7 +72,6 @@ def show_title_screen(stdscr, settings):
             "|____/|_| |_|\\__,_|_|\\_\\___|",
             "",
             "Ruben Dougall",
-            "2019",
             "",
             "Press C to view controls...",
             "Press S to change settings...",
