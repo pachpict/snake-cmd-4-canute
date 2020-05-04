@@ -18,6 +18,9 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
+        "Environment :: Console :: Curses",
+        "Natural Language :: English",
+        "Topic :: Games/Entertainment :: Arcade",
     ],
     python_requires='>=3.6',
     entry_points={
