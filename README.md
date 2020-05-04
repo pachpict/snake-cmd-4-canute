@@ -1,5 +1,6 @@
 # Snake
 
+![Travis (.com)](https://img.shields.io/travis/com/Ruben9922/snake-cmd)
 ![PyPI](https://img.shields.io/pypi/v/ruben-snake-cmd)
 ![GitHub](https://img.shields.io/github/license/Ruben9922/snake-cmd)
 
