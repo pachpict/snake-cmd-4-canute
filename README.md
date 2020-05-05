@@ -1,8 +1,8 @@
 # Snake
 
-![Travis (.com)](https://img.shields.io/travis/com/Ruben9922/snake-cmd)
-![PyPI](https://img.shields.io/pypi/v/ruben-snake-cmd)
-![GitHub](https://img.shields.io/github/license/Ruben9922/snake-cmd)
+[![Build Status](https://travis-ci.com/Ruben9922/snake-cmd.svg?branch=master)](https://travis-ci.com/Ruben9922/snake-cmd)
+[![PyPI](https://img.shields.io/pypi/v/ruben-snake-cmd)](https://pypi.org/project/ruben-snake-cmd/)
+[![GitHub](https://img.shields.io/github/license/Ruben9922/snake-cmd)](https://github.com/Ruben9922/snake-cmd/blob/master/LICENSE)
 
 Command-line version of the classic Snake game.
 
