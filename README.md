@@ -8,8 +8,21 @@ Command-line version of the classic Snake game.
 
 ![GIF showing gameplay](https://raw.githubusercontent.com/Ruben9922/snake-cmd/master/screenshot1.gif)
 
+## Installation
+
+Install as usual:
+
+```bash
+pip install ruben-snake-cmd
+```
+
+You may wish to [create a virtual environment](https://docs.python.org/3/tutorial/venv.html#creating-virtual-environments) beforehand.
+
+### Installation on Windows
+The game requires the curses library. This should already be installed on Linux and macOS so no additional steps are required. However, it is not included in the Windows version of Python, as noted in the [curses documentation](https://docs.python.org/3.7/howto/curses.html#what-is-curses). On Windows, you can install the `windows-curses` package (see [this comment](https://gist.github.com/sanchitgangwar/2158089#gistcomment-3029530)), using `pip install windows-curses`.
+
 ## Usage
-You should be able to run the application using the following command:
+Run the game using the following command:
 ```bash
 ruben-snake-cmd
 ```
