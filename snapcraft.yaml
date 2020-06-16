@@ -11,8 +11,6 @@ parts:
   ruben-snake-cmd:
     plugin: python
     source: .
-    stage-packages:
-      - python-six
 
 apps:
   ruben-snake-cmd:
