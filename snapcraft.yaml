@@ -1,0 +1,19 @@
+name: ruben-snake-cmd
+version: '0.2.3'
+summary: Snake
+description: |
+  Command-line version of the classic Snake game.
+license: GPL-3.0
+confinement: strict
+base: core18
+
+parts:
+  ruben-snake-cmd:
+    plugin: python
+    source: .
+    stage-packages:
+      - python-six
+
+apps:
+  ruben-snake-cmd:
+    command: ruben-snake-cmd
