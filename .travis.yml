@@ -12,6 +12,7 @@ install:
 # Run tests
 script:
   - echo "skipping tests"
+  - snapcraft
 
 deploy:
   - provider: pypi
