@@ -24,8 +24,7 @@ deploy:
     distributions: "sdist bdist_wheel"
     skip_existing: true
   - provider: snap
-    snap: ruben-snake-cmd_*.snap
     channel: edge
-    skip_cleanup: true
+    edge: true
     on:
       python: 3.6
