@@ -13,6 +13,7 @@ install:
 script:
   - echo "skipping tests"
 
+before_deploy: snapcraft
 deploy:
   - provider: pypi
     user: __token__
