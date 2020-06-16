@@ -12,7 +12,6 @@ install:
 # Run tests
 script:
   - echo "skipping tests"
-  - snapcraft
 
 deploy:
   - provider: pypi
@@ -25,6 +24,7 @@ deploy:
     distributions: "sdist bdist_wheel"
     skip_existing: true
   - provider: snap
+    snap: ruben-snake-cmd_*.snap
     channel: edge
     edge: true
     on:
