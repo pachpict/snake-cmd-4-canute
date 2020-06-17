@@ -1,5 +1,5 @@
 name: ruben-snake-cmd
-version: '0.2.3'
+version: git
 summary: Command-line version of the classic Snake game
 description: |
   Command-line version of the classic Snake game.
