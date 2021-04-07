@@ -4,8 +4,8 @@ from enum import Enum, auto
 
 
 class Snake:
-    def __init__(self, stdscr, initial_length):
-        self.cells = [((stdscr.getmaxyx()[0] // 2) + x, stdscr.getmaxyx()[1] // 2) for x in range(initial_length)]
+    def __init__(self, game, initial_length):
+        self.cells = [((game.compute_height() // 2) + x, game.compute_width() // 2) for x in range(initial_length)]
         self.direction = (-1, 0)
 
 
@@ -22,12 +22,21 @@ class VerticalAlignment(Enum):
 
 
 class Game:
+    max_height = 100
+    max_width = 100
+
     def __init__(self, stdscr):
         self.stdscr = stdscr
 
+    def compute_height(self):
+        return min(self.stdscr.getmaxyx()[0], Game.max_height)
+
+    def compute_width(self):
+        return min(self.stdscr.getmaxyx()[1], Game.max_width)
+
     def show_game_screen(self, settings):
-        snake = Snake(self.stdscr, 1)
-        pellet = (randint(0, self.stdscr.getmaxyx()[0] - 1), randint(0, self.stdscr.getmaxyx()[1] - 1))
+        snake = Snake(self, 1)
+        pellet = (randint(0, self.compute_height() - 1), randint(0, self.compute_width() - 1))
 
         key = None
         # getch return value of 27 corresponds to escape key - doesn't look like curses has a constant for this
@@ -77,10 +86,10 @@ class Game:
         # TODO: Use vector library
         new_front = (current_front[0] + snake.direction[0], current_front[1] + snake.direction[1])
         if not settings["snake_wrapping"]["value"]\
-                and (new_front[0] < 0 or new_front[0] >= self.stdscr.getmaxyx()[0]
-                     or new_front[1] < 0 or new_front[1] >= self.stdscr.getmaxyx()[1]):
+                and (new_front[0] < 0 or new_front[0] >= self.compute_height()
+                     or new_front[1] < 0 or new_front[1] >= self.compute_width()):
             return True, pellet
-        new_front = (new_front[0] % self.stdscr.getmaxyx()[0], new_front[1] % self.stdscr.getmaxyx()[1])
+        new_front = (new_front[0] % self.compute_height(), new_front[1] % self.compute_width())
         snake.cells.insert(0, new_front)
 
         # If the snake just "ate" (intersected with) a pellet:
@@ -90,7 +99,7 @@ class Game:
         # * Remove a cell to compensate for the one just added, so length of the snake stays the same
         # * Obviously leave the pellet where it is
         if pellet in snake.cells:
-            pellet = (randint(0, self.stdscr.getmaxyx()[0] - 1), randint(0, self.stdscr.getmaxyx()[1] - 1))
+            pellet = (randint(0, self.compute_height() - 1), randint(0, self.compute_width() - 1))
         else:
             snake.cells.pop()
 
@@ -106,7 +115,7 @@ class Game:
         if len(snake.cells) <= 3:
             self.stdscr.attron(curses.A_STANDOUT)
             message = "Hint: To move faster, repeatedly press or hold the arrow key."
-            self.stdscr.addstr(0, self.stdscr.getmaxyx()[1] - len(message), message)
+            self.stdscr.addstr(0, self.compute_width() - len(message), message)
             self.stdscr.attroff(curses.A_STANDOUT)
 
         # Draw pellet
