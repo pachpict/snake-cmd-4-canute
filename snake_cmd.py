@@ -22,8 +22,8 @@ class VerticalAlignment(Enum):
 
 
 class Game:
-    max_height = 100
-    max_width = 100
+    max_height = 24
+    max_width = 80
 
     def __init__(self, stdscr):
         self.stdscr = stdscr
