@@ -1,12 +1,22 @@
 import curses
-from random import randint
 from enum import Enum, auto
+import numpy as np
 
 
 class Snake:
-    def __init__(self, game, initial_length):
-        self.cells = [((game.compute_height() // 2) + x, game.compute_width() // 2) for x in range(initial_length)]
-        self.direction = (-1, 0)
+    def __init__(self, initial_length):
+        self.cells = np.stack([
+            np.arange(initial_length) + (Game.max_size[0] // 2),
+            np.zeros(initial_length, dtype="int64") + (Game.max_size[1] // 2),
+        ], axis=1)
+        self.direction = np.array([-1, 0])
+
+    @property
+    def length(self):
+        return self.cells.shape[0]
+
+    def intersected_itself(self):
+        return self.cells.shape[0] != np.unique(self.cells, axis=0).shape[0]
 
 
 class HorizontalAlignment(Enum):
@@ -22,29 +32,29 @@ class VerticalAlignment(Enum):
 
 
 class Game:
-    max_height = 24
-    max_width = 80
+    max_size = np.array([24, 80])
 
     def __init__(self, stdscr):
         self.stdscr = stdscr
 
-    def compute_height(self):
-        return min(self.stdscr.getmaxyx()[0], Game.max_height)
-
-    def compute_width(self):
-        return min(self.stdscr.getmaxyx()[1], Game.max_width)
+    @property
+    def window_size(self):
+        return np.amin(np.stack([
+            self.stdscr.getmaxyx(),
+            Game.max_size,
+        ]), axis=0)
 
     def show_game_screen(self, settings):
-        snake = Snake(self, 1)
-        pellet = (randint(0, self.compute_height() - 1), randint(0, self.compute_width() - 1))
+        snake = Snake(1)
+        pellet = np.random.randint(Game.max_size, size=2)
 
         key = None
         # getch return value of 27 corresponds to escape key - doesn't look like curses has a constant for this
         # 3rd condition checks if snake has "eaten" (intersected with) itself, i.e. whether any cells re-appear in the list
-        while key != 27 and key != ord("q") and len(snake.cells) == len(set(snake.cells)):
+        while key != 27 and key != ord("q") and not snake.intersected_itself():
             # Set the maximum amount of time to block for a key press
             # This is effectively the update interval
-            self.stdscr.timeout(max(20, 250 // (len(snake.cells) // 5 + 1)))
+            self.stdscr.timeout(max(20, 250 // (snake.length // 5 + 1)))
             key = self.stdscr.getch()  # TODO: Do this last to prevent waiting before drawing game screen
 
             # Update
@@ -59,38 +69,34 @@ class Game:
         self.stdscr.nodelay(False)
 
         # Return score
-        return len(snake.cells)
+        return snake.length
 
     def update_game_screen(self, key, snake, pellet, settings):
         # Set new direction based on the key input
         # If an arrow key wasn't pressed then continue in same direction
         if key == curses.KEY_LEFT:
-            new_direction = (0, -1)
+            new_direction = np.array([0, -1])
         elif key == curses.KEY_RIGHT:
-            new_direction = (0, 1)
+            new_direction = np.array([0, 1])
         elif key == curses.KEY_UP:
-            new_direction = (-1, 0)
+            new_direction = np.array([-1, 0])
         elif key == curses.KEY_DOWN:
-            new_direction = (1, 0)
+            new_direction = np.array([1, 0])
         else:
             new_direction = snake.direction
 
         # Prevent the snake reversing on itself, i.e. check that the snake's current and new directions aren't the reverse
         # of one another
-        new_direction_reversed = (-new_direction[0], -new_direction[1])
-        if snake.direction != new_direction_reversed:
+        if not np.array_equal(snake.direction, -new_direction):
             snake.direction = new_direction
 
-        #
+        # Add a cell to the front of the snake, in the given direction
         current_front = snake.cells[0]
-        # TODO: Use vector library
-        new_front = (current_front[0] + snake.direction[0], current_front[1] + snake.direction[1])
-        if not settings["snake_wrapping"]["value"]\
-                and (new_front[0] < 0 or new_front[0] >= self.compute_height()
-                     or new_front[1] < 0 or new_front[1] >= self.compute_width()):
+        new_front = current_front + snake.direction
+        if not settings["snake_wrapping"]["value"] and not (np.zeros(2) <= new_front < Game.max_size):
             return True, pellet
-        new_front = (new_front[0] % self.compute_height(), new_front[1] % self.compute_width())
-        snake.cells.insert(0, new_front)
+        new_front = new_front % Game.max_size
+        snake.cells = np.insert(snake.cells, 0, new_front, axis=0)
 
         # If the snake just "ate" (intersected with) a pellet:
         # * Effectively increase the length by 1, by not removing a cell to compensate for the one just added
@@ -98,10 +104,10 @@ class Game:
         # If the snake didn't just "eat" a pellet:
         # * Remove a cell to compensate for the one just added, so length of the snake stays the same
         # * Obviously leave the pellet where it is
-        if pellet in snake.cells:
-            pellet = (randint(0, self.compute_height() - 1), randint(0, self.compute_width() - 1))
+        if (snake.cells == pellet).all(axis=1).any():
+            pellet = np.random.randint(Game.max_size, size=2)
         else:
-            snake.cells.pop()
+            snake.cells = np.delete(snake.cells, -1, axis=0)
 
         return False, pellet
 
@@ -109,13 +115,13 @@ class Game:
         self.stdscr.clear()
 
         # Display score
-        self.stdscr.addstr(0, 0, f"Score: {len(snake.cells)}")
+        self.stdscr.addstr(0, 0, f"Score: {snake.length}")
 
         # Display hint
-        if len(snake.cells) <= 3:
+        if snake.length <= 3:
             self.stdscr.attron(curses.A_STANDOUT)
             message = "Hint: To move faster, repeatedly press or hold the arrow key."
-            self.stdscr.addstr(0, self.compute_width() - len(message), message)
+            self.stdscr.addstr(0, Game.max_size[1] - len(message), message)
             self.stdscr.attroff(curses.A_STANDOUT)
 
         # Draw pellet
