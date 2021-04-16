@@ -81,7 +81,8 @@ class Game:
         # Add a cell to the front of the snake, in the given direction
         current_front = snake.cells[0]
         new_front = current_front + snake.direction
-        if not settings["snake_wrapping"]["value"] and not (np.zeros(2) <= new_front < Game.max_size):
+        if not settings["snake_wrapping"]["value"]\
+                and not (np.all(new_front >= gu.ZERO) and np.all(new_front < Game.max_size)):
             return True, pellet
         new_front = new_front % Game.max_size
         snake.cells = np.insert(snake.cells, 0, new_front, axis=0)
