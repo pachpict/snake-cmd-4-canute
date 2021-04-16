@@ -1,6 +1,6 @@
 import curses
-from enum import Enum, auto
 import numpy as np
+import game_utilities as gu
 
 
 class Snake:
@@ -17,18 +17,6 @@ class Snake:
 
     def intersected_itself(self):
         return self.cells.shape[0] != np.unique(self.cells, axis=0).shape[0]
-
-
-class HorizontalAlignment(Enum):
-    LEFT = auto()
-    CENTER = auto()
-    RIGHT = auto()
-
-
-class VerticalAlignment(Enum):
-    TOP = auto()
-    CENTER = auto()
-    BOTTOM = auto()
 
 
 class Game:
@@ -75,13 +63,13 @@ class Game:
         # Set new direction based on the key input
         # If an arrow key wasn't pressed then continue in same direction
         if key == curses.KEY_LEFT:
-            new_direction = np.array([0, -1])
+            new_direction = gu.LEFT
         elif key == curses.KEY_RIGHT:
-            new_direction = np.array([0, 1])
+            new_direction = gu.RIGHT
         elif key == curses.KEY_UP:
-            new_direction = np.array([-1, 0])
+            new_direction = gu.UP
         elif key == curses.KEY_DOWN:
-            new_direction = np.array([1, 0])
+            new_direction = gu.DOWN
         else:
             new_direction = snake.direction
 
@@ -194,7 +182,7 @@ def show_title_screen(stdscr, settings):
     while not finished:
         stdscr.clear()
 
-        addstr_multiline_aligned(stdscr, [
+        gu.addstr_multiline_aligned(stdscr, [
             " ____              _        \n"
             "/ ___| _ __   __ _| | _____ \n"
             "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
@@ -206,7 +194,7 @@ def show_title_screen(stdscr, settings):
             "Press C to view controls...",
             "Press S to change settings...",
             "Press any key to start..."
-        ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
+        ], gu.HorizontalAlignment.CENTER, gu.VerticalAlignment.CENTER)
 
         key = stdscr.getch()
         if key == ord("c"):
@@ -219,14 +207,14 @@ def show_title_screen(stdscr, settings):
 
 def show_controls_screen(stdscr):
     stdscr.clear()
-    addstr_multiline_aligned(stdscr, [
+    gu.addstr_multiline_aligned(stdscr, [
         "In-Game Controls",
         "",
         "← ↑ → ↓ - Change direction (hold to move faster)",
         "Q - End game",
         "",
         "Press any key to close this screen..."
-    ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
+    ], gu.HorizontalAlignment.CENTER, gu.VerticalAlignment.CENTER)
     stdscr.getch()
 
 
@@ -234,13 +222,13 @@ def show_settings_screen(stdscr, settings):
     finished = False
     while not finished:
         stdscr.clear()
-        addstr_multiline_aligned(stdscr, [
+        gu.addstr_multiline_aligned(stdscr, [
             "Settings",
             ""
         ] + [f"{x['key'].upper()} - {x['name']} ({x['value']})" for x in settings.values()] + [
                                      "",
                                      "Press any key to close this screen..."
-                                 ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
+                                 ], gu.HorizontalAlignment.CENTER, gu.VerticalAlignment.CENTER)
 
         key = stdscr.getch()
         setting = next((x for x in settings.values() if key == ord(x["key"])), None)
@@ -250,73 +238,14 @@ def show_settings_screen(stdscr, settings):
             setting["value"] = not setting["value"]
 
 
-def addstr_multiline_aligned(stdscr, strings, horizontal_alignment=HorizontalAlignment.LEFT,
-                             vertical_alignment=VerticalAlignment.TOP):
-    y = vertically_align_text(stdscr, strings, vertical_alignment)
-    for string in strings:
-        lines = string.split("\n")
-        x = horizontally_align_text(stdscr, string, horizontal_alignment)
-        for line in lines:
-            stdscr.addstr(y, x, line)
-            y += 1
-
-
-# TODO: Might refactor these later
-# Calculates column the text should start at (i.e. the argument x for the addstr method) when aligned using the given
-# alignment
-def horizontally_align_text(stdscr, string, alignment):
-    window_width = stdscr.getmaxyx()[1]
-    window_left = stdscr.getbegyx()[1]
-
-    # The input text may contain multiple lines
-    # The overall width of the text is the length of the longest line
-    lines = string.split("\n")
-    text_width = max(map(len, lines))
-
-    if alignment == HorizontalAlignment.RIGHT:
-        window_right = window_left + window_width - 1
-        text_left = window_right - text_width + 1
-    elif alignment == HorizontalAlignment.CENTER:
-        text_left = center(text_width, window_left, window_width)
-    else:
-        text_left = 0
-
-    return text_left
-
-
-# Calculates line the text should start at (i.e. the argument y for the addstr method) when aligned using the given
-# alignment
-def vertically_align_text(stdscr, strings, alignment):
-    window_height = stdscr.getmaxyx()[0]
-    window_top = stdscr.getbegyx()[0]
-
-    # The input text may contain multiple lines
-    # The overall height of the text is the number of lines in each string summed up
-    text_height = sum(map(lambda string: len(string.split("\n")), strings))
-
-    if alignment == VerticalAlignment.BOTTOM:
-        window_right = window_top + window_height - 1
-        text_top = window_right - text_height + 1
-    elif alignment == VerticalAlignment.CENTER:
-        text_top = center(text_height, window_top, window_height)
-    else:
-        text_top = 0
-
-    return text_top
-
-
-def center(text_size, window_min, window_size):
-    return window_min + ((window_size - 1) // 2) - (text_size // 2)
-
-
 def show_game_over_screen(stdscr, score):
     stdscr.clear()
-    addstr_multiline_aligned(stdscr, [
+    gu.addstr_multiline_aligned(stdscr, [
         "Game over!",
         f"Score: {score}",
         "",
         "Press any key to exit..."
-    ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
+    ], gu.HorizontalAlignment.CENTER, gu.VerticalAlignment.CENTER)
     stdscr.getch()
 
 
