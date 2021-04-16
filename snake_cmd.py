@@ -32,7 +32,7 @@ class Game:
             Game.max_size,
         ]), axis=0)
 
-    def show_game_screen(self, settings):
+    def show(self, settings):
         snake = Snake(1)
         pellet = np.random.randint(Game.max_size, size=2)
 
@@ -46,12 +46,12 @@ class Game:
             key = self.stdscr.getch()  # TODO: Do this last to prevent waiting before drawing game screen
 
             # Update
-            (game_over, pellet) = self.update_game_screen(key, snake, pellet, settings)
+            (game_over, pellet) = self.update(key, snake, pellet, settings)
             if game_over:
                 break
 
             # Draw
-            self.draw_game_screen(snake, pellet)
+            self.draw(snake, pellet)
 
         # For user input, remove the timeout but keep blocking enabled
         self.stdscr.nodelay(False)
@@ -59,7 +59,7 @@ class Game:
         # Return score
         return snake.length
 
-    def update_game_screen(self, key, snake, pellet, settings):
+    def update(self, key, snake, pellet, settings):
         # Set new direction based on the key input
         # If an arrow key wasn't pressed then continue in same direction
         if key == curses.KEY_LEFT:
@@ -100,7 +100,7 @@ class Game:
 
         return False, pellet
 
-    def draw_game_screen(self, snake, pellet):
+    def draw(self, snake, pellet):
         self.stdscr.clear()
 
         # Display score
@@ -160,7 +160,7 @@ def curses_main(stdscr):
     curses.curs_set(0)
 
     game = Game(stdscr)
-    score = game.show_game_screen(settings)
+    score = game.show(settings)
 
     # Show cursor
     curses.curs_set(1)
