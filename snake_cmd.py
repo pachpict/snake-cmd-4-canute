@@ -33,7 +33,7 @@ def curses_main(stdscr):
         "snake_wrapping": {
             "name": "Snake wraps around screen edge",
             "key": "b",
-            "value": True
+            "value": False
         }
     }
     show_title_screen(stdscr, settings)
@@ -65,14 +65,9 @@ def show_title_screen(stdscr, settings):
         stdscr.clear()
 
         addstr_multiline_aligned(stdscr, [
-            " ____              _        \n"
-            "/ ___| _ __   __ _| | _____ \n"
-            "\\___ \\| '_ \\ / _` | |/ / _ \\\n"
-            " ___) | | | | (_| |   <  __/\n"
-            "|____/|_| |_|\\__,_|_|\\_\\___|",
-            "",
-            "Ruben Dougall",
-            "",
+            "Snake",
+            "by Ruben Dougall",
+            "Adapted by Ed Rogers",
             "Press C to view controls...",
             "Press S to change settings...",
             "Press any key to start..."
@@ -90,11 +85,9 @@ def show_title_screen(stdscr, settings):
 def show_controls_screen(stdscr):
     stdscr.clear()
     addstr_multiline_aligned(stdscr, [
-        "In-Game Controls",
-        "",
-        "← ↑ → ↓ - Change direction (hold to move faster)",
+        "In-Game Controls:",
+        "left, right, up, down - Change direction",
         "Q - End game",
-        "",
         "Press any key to close this screen..."
     ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
     stdscr.getch()
