@@ -272,12 +272,16 @@ def draw_game_screen(stdscr, snake, pellet):
     # Draw snake
     for cell in snake.cells:
 
+        if (cell == snake.cells[0]):
+            snake_head="="
+        else:
+            snake_head="g"
 
         if curses.has_colors():
             stdscr.attron(curses.color_pair(1))
 		
         try:
-            stdscr.addch(cell[0], cell[1], "=")
+            stdscr.addch(cell[0], cell[1], snake_head)
         except curses.error as e:  # Ignore error when writing to bottom-right corner of window
             pass
 
