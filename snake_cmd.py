@@ -182,7 +182,7 @@ def show_game_screen(stdscr, settings):
     while key != 27 and key != ord("q") and len(snake.cells) == len(set(snake.cells)):
         # Set the maximum amount of time to block for a key press
         # This is effectively the update interval
-        stdscr.timeout(max(20, 250 // (len(snake.cells) // 5 + 1)))
+        stdscr.timeout(2000)
         key = stdscr.getch()  # TODO: Do this last to prevent waiting before drawing game screen
 
         # Update
