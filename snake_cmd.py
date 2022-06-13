@@ -68,49 +68,15 @@ def show_title_screen(stdscr, settings):
             "Snake",
             "by Ruben Dougall",
             "Adapted by Ed Rogers",
-            "Press C to view controls...",
-            "Press S to change settings...",
+            "Move the snake by tapping:",
+            "left, right, up, down",
+            "Eat the mice, avoid the walls",
+            "Press Q to end the game",
             "Press any key to start..."
         ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
 
         key = stdscr.getch()
-        if key == ord("c"):
-            show_controls_screen(stdscr)
-        elif key == ord("s"):
-            show_settings_screen(stdscr, settings)
-        else:
-            finished = True
-
-
-def show_controls_screen(stdscr):
-    stdscr.clear()
-    addstr_multiline_aligned(stdscr, [
-        "In-Game Controls:",
-        "left, right, up, down - Change direction",
-        "Q - End game",
-        "Press any key to close this screen..."
-    ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
-    stdscr.getch()
-
-
-def show_settings_screen(stdscr, settings):
-    finished = False
-    while not finished:
-        stdscr.clear()
-        addstr_multiline_aligned(stdscr, [
-            "Settings",
-            ""
-        ] + [f"{x['key'].upper()} - {x['name']} ({x['value']})" for x in settings.values()] + [
-                                     "",
-                                     "Press any key to close this screen..."
-                                 ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
-
-        key = stdscr.getch()
-        setting = next((x for x in settings.values() if key == ord(x["key"])), None)
-        if setting is None:
-            finished = True
-        else:
-            setting["value"] = not setting["value"]
+        finished = True
 
 
 def addstr_multiline_aligned(stdscr, strings, horizontal_alignment=HorizontalAlignment.LEFT,
