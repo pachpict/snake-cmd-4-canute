@@ -67,7 +67,7 @@ def show_title_screen(stdscr, settings):
         addstr_multiline_aligned(stdscr, [
             "Snake",
             "by Ruben Dougall",
-            "Adapted by Ed Rogers",
+            "Adapted for Canute 360 by Ed Rogers",
             "Move the snake by tapping:",
             "left, right, up, down",
             "Eat the mice, avoid the walls",
@@ -249,12 +249,9 @@ def draw_game_screen(stdscr, snake, pellet):
 
 
 def show_game_over_screen(stdscr, score):
-    stdscr.clear()
+    stdscr.addstr(0, 0, f"Final score: {score}")
     addstr_multiline_aligned(stdscr, [
-        "Game over!",
-        f"Score: {score}",
-        "",
-        "Press any key to exit..."
+        " Game over! Press any key to exit... ",
     ], HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
     stdscr.getch()
 
