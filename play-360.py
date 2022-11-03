@@ -32,7 +32,7 @@ class Snake:
 				initial_length
 			)
 		]
-		self.direction = (0, 1)
+		self.direction = (0, 0)
 
 def addstr_multiline_aligned(
 	stdscr,
@@ -192,8 +192,9 @@ def curses_main(stdscr):
 			"value": False
 		},
 		"missions" : [
+			" abcdefghij",
 			" abcdefghijklmnopqrstuvwxyz", 
-			" bit-of-a-test-for-fun.-this one will-go-on-and-and-forever."
+			" bit-of-a-test-for-fun4-this one will-go-on-for-a-bit-longer4"
 		]
 	}
 	mission = 0
@@ -207,6 +208,29 @@ def curses_main(stdscr):
 
 	# Hide cursor
 	curses.curs_set(1)
+
+	score = show_game_screen(
+		stdscr, settings, mission
+	)
+
+	# Show cursor
+	curses.curs_set(1)
+
+	show_game_over_screen(
+		stdscr, score
+	)
+
+def next_mission(
+	stdscr, 
+	settings, 
+	mission
+):
+	time.sleep(4)
+	mission = mission+1
+
+	show_mission_screen(
+		stdscr, settings, mission
+	)
 
 	score = show_game_screen(
 		stdscr, settings, mission
@@ -305,8 +329,7 @@ def show_game_screen(
 		# Update
 		(
 			game_over,
-			pellet,
-			mission_complete
+			pellet
 		) = update_game_screen(
 			stdscr,
 			key,
@@ -316,6 +339,13 @@ def show_game_screen(
 		)
 		if game_over:
 			break
+
+		if len(settings["missions"][mission]) == len(snake.cells):
+			next_mission(
+				stdscr, 
+				settings, 
+				mission
+			)
 
 		# Draw
 		draw_game_screen(
